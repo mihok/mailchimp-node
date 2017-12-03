@@ -30,8 +30,9 @@ value:
 ``` js
 var mailchimp = require('mailchimp')('sk_test_...');
 
-mailchimp.subscribers.create(
-  { email: 'subscriber@example.com' },
+mailchimp.list.createMember.create(
+  'exampleListHash',
+  { email: 'subscriber@example.com', status: 'subscriber' },
   function(err, subscriber) {
     err; // null if no error occurred
     subscriber; // the created subscriber object
@@ -53,17 +54,28 @@ callback:
 
 ``` js
 // Create a new subscriber and then a new charge for that subscriber:
-mailchimp.subscribers.create({
-  email: 'foo-subscriber@example.com'
+mailchimp.list.create({
+  name: 'Foobar Johnson',
+  contact: {
+    company: 'Foobar Inc.',
+    address1: '123 Foobar Street',
+    city: 'Foocity',
+    state: 'Foostate',
+    zip: 01234,
+    country: 'US',
+  },
+  permission_reminder: '',
+  campaign_defaults: {
+    from_name: 'Foobar Johnson',
+    from_email: 'foo123johnson@example.com',
+    subject: 'Default Foobar Subject',
+    language: 'eng',
+  },
+  email_type_option: false,
 }).then(function(subscriber){
-  return mailchimp.subscribers.createSource(subscriber.id, {
-    source: 'tok_visa'
-  });
-}).then(function(source) {
-  return mailchimp.charges.create({
-    amount: 1600,
-    currency: 'usd',
-    subscriber: source.subscriber
+  return mailchimp.list.createMember('foobarJohnsonListHash, {
+    email: 'bob@example.com',
+    status: 'subscriber',
   });
 }).then(function(charge) {
   // New charge created on a new subscriber
@@ -79,7 +91,7 @@ Request timeout is configurable (the default is Node's default of 120 seconds):
 ``` js
 mailchimp.setTimeout(20000); // in ms (this is 20 seconds)
 ```
-
+<!--
 ### Configuring For Connect
 
 A per-request `mailchimp-Account` header for use with [mailchimp Connect][connect]
@@ -95,7 +107,7 @@ mailchimp.balance.retrieve({
   // Error
 });
 ```
-
+-->
 ### Configuring a Proxy
 
 An [https-proxy-agent][https-proxy-agent] can be configured with
@@ -222,15 +234,15 @@ $ npm run mocha -- test/Error.spec.js --grep 'Populates with type'
 ```
 
 If you wish, you may run tests using your mailchimp *Test* API key by setting the
-environment variable `mailchimp_TEST_API_KEY` before running the tests:
+environment variable `MAILCHIMP_TEST_API_KEY` before running the tests:
 
 ```bash
 $ export mailchimp_TEST_API_KEY='sk_test....'
 $ npm test
 ```
 
-[api-keys]: https://dashboard.mailchimp.com/account/apikeys
-[connect]: https://mailchimp.com/connect
+[api-keys]: https://admin.mailchimp.com/account/api
+<!-- [connect]: https://mailchimp.com/connect -->
 [https-proxy-agent]: https://github.com/TooTallNate/node-https-proxy-agent
 
 <!--
