@@ -184,7 +184,6 @@ describe('Mailchimp Module', function() {
       it('Will expose HTTP response object', function() {
         return expect(new Promise(function(resolve, reject) {
           mailchimp.lists.createMember(LIST_ID, LIST_MEMBER_DETAILS, function(err, member) {
-            console.log('DEBUG', err, member); // eslint-disable-line no-console
             cleanup.deleteMember(LIST_ID, crypto.createHash('md5').update(LIST_MEMBER_DETAILS.email_address).digest('hex'));
 
 
@@ -202,7 +201,6 @@ describe('Mailchimp Module', function() {
       it('Given an error the callback will receive it', function() {
         return expect(new Promise(function(resolve, reject) {
           mailchimp.lists.createMember('nonExistentListId', {email: ''}, function(err, member) {
-            console.log('DEBUG', err, member); // eslint-disable-line no-console
             if (err) {
               resolve('ErrorWasPassed');
             } else {
