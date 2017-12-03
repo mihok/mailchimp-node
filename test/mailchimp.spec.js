@@ -10,9 +10,18 @@ var mailchimp = require('../lib/mailchimp')(
 
 var expect = require('chai').expect;
 
+function randomNum (low, high) {
+  var result = Math.random()
+  var delta = high - low;
+
+  result *= delta;
+  return result + low;
+}
+
 var LIST_ID = '6b1535640e';
 var LIST_MEMBER_DETAILS = {
-  email_address: 'customer@email.com',
+  // Generate a random email due to Mailchimp complaining after multiple retries
+  email_address: 'customer-' + randomNum(1, 99999) + '@email.com',
   status: 'subscribed',
 };
 

@@ -51,7 +51,7 @@ describe('utils', function() {
           {b: 'c'},
           {b: 'd'},
         ],
-      }))).to.equal('a[][b]=c&a[][b]=d');
+      }))).to.equal('{"a":[{"b":"c"},{"b":"d"}]}');
     })
 
     it('Creates a string from an object, handling shallow nested objects', function() {
@@ -63,20 +63,14 @@ describe('utils', function() {
           1: 2,
           'a n o t h e r': null,
         },
-      })).to.equal([
-        'test=1',
-        'foo=baz',
-        'somethingElse=%3A%3A%22%22%25%26',
-        'nested%5B1%5D=2', // Unencoded: nested[1]=2
-        'nested%5Ba%20n%20o%20t%20h%20e%20r%5D=',
-      ].join('&'));
+      })).to.equal('{"test":1,"foo":"baz","somethingElse":"::\\"\\"%&","nested":{"1":2,"a n o t h e r":null}}');
     });
 
-    describe('Stripe-specific cases', function() {
+    describe('Mailchimp-specific cases', function() {
       it('Handles the `expand` array correctly (producing the form `expand[]=_` for each item', function() {
         expect(decodeURI(utils.stringifyRequestData({
           expand: ['a', 'foo', 'a.b.c'],
-        }))).to.equal('expand[]=a&expand[]=foo&expand[]=a.b.c');
+        }))).to.equal('{"expand":["a","foo","a.b.c"]}');
       });
     });
   });
