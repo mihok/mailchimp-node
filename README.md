@@ -8,6 +8,8 @@
 A Mailchimp Node library provides convenient access to the Mailchimo API from
 applications written in server-side JavaScript.
 
+This library uses Mailchimp API v3.0
+
 Forked from the excellent [Stripe Node library](https://github.com/stripe/stripe-node)
 
 <!--
@@ -19,7 +21,7 @@ See the [Node API docs](https://mailchimp.com/docs/api/node#intro).
  
 Install the package with:
 
-    npm install mailchimp --save
+    npm install mailchimp-node --save
 
 # # Usage
 
@@ -28,9 +30,9 @@ available in your [Mailchimp Dashboard][api-keys]. Require it with the key's
 value:
 
 ``` js
-var mailchimp = require('mailchimp')('sk_test_...');
+var mailchimp = require('mailchimp-node')('sk_test_...');
 
-mailchimp.list.createMember.create(
+mailchimp.list.createMember(
   'exampleListHash',
   { email: 'subscriber@example.com', status: 'subscriber' },
   function(err, subscriber) {
@@ -72,13 +74,13 @@ mailchimp.list.create({
     language: 'eng',
   },
   email_type_option: false,
-}).then(function(subscriber){
-  return mailchimp.list.createMember('foobarJohnsonListHash, {
+}).then(function(list){
+  return mailchimp.list.createMember(list.id, {
     email: 'bob@example.com',
     status: 'subscriber',
   });
-}).then(function(charge) {
-  // New charge created on a new subscriber
+}).then(function(subscriber) {
+  // New subscriber
 }).catch(function(err) {
   // Deal with an error
 });
