@@ -9,7 +9,7 @@ require('chai').use(require('chai-as-promised'));
 var utils = module.exports = {
 
   getUserMailchimpKey: function() {
-    var key = process.env.MAILCHIMP_TEST_API_KEY || 'tGN0bIwXnHdwOa85VABjPdSn8nWY7G7I-us0';
+    var key = process.env.MAILCHIMP_TEST_API_KEY || 'tGN0bIwXnHdwOa85VABjPdSn8nWY7G7I-us1';
 
     return key;
   },
