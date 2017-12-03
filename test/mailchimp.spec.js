@@ -18,7 +18,7 @@ function randomNum (low, high) {
   return result + low;
 }
 
-var LIST_ID = '6b1535640e';
+var LIST_ID = 'a6fc029cfe';
 var LIST_MEMBER_DETAILS = {
   // Generate a random email due to Mailchimp complaining after multiple retries
   email_address: 'customer-' + randomNum(1, 99999) + '@email.com',
