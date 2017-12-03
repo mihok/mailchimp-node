@@ -1,30 +1,25 @@
 {
   "name": "stripe",
-  "version": "6.1.1",
-  "description": "Stripe API wrapper",
+  "version": "1.1.1",
+  "description": "Mailchimp API wrapper",
   "keywords": [
-    "stripe",
-    "payment processing",
-    "credit cards",
+    "mailchimp",
+    "email",
+    "marketing",
     "api"
   ],
-  "homepage": "https://github.com/stripe/stripe-node",
-  "author": "Stripe <support@stripe.com> (https://stripe.com/)",
-  "contributors": [
-    "Ask Bjørn Hansen <ask@develooper.com> (http://www.askask.com/)",
-    "Michelle Bu <michelle@stripe.com>",
-    "Alex Sexton <alex@stripe.com>",
-    "James Padolsey"
-  ],
+  "homepage": "https://github.com/mihok/mailchimp-node",
+  "author": "Matthew Mihok <matthew@mihok.computer>",
+  "contributors": [],
   "repository": {
     "type": "git",
-    "url": "git://github.com/stripe/stripe-node.git"
+    "url": "git://github.com/mihok/mailchimp-node.git"
   },
-  "bugs:": "https://github.com/stripe/stripe-node/issues",
+  "bugs:": "https://github.com/mihok/mailchimp-node/issues",
   "engines": {
     "node": ">=4"
   },
-  "main": "lib/stripe.js",
+  "main": "lib/mailchimp.js",
   "devDependencies": {
     "chai": "~4.1.2",
     "chai-as-promised": "~7.1.1",

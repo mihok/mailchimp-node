@@ -1,6 +1,6 @@
 'use strict';
 
-var stripe = require('./testUtils').getSpyableStripe();
+var mailchimp = require('./testUtils').getSpyableMailchimp();
 var expect = require('chai').expect;
 
 var EVENT_PAYLOAD = {
@@ -18,7 +18,7 @@ describe('Webhooks', function() {
         payload: EVENT_PAYLOAD_STRING,
       });
 
-      var event = stripe.webhooks.constructEvent(EVENT_PAYLOAD_STRING, header, SECRET);
+      var event = mailchimp.webhooks.constructEvent(EVENT_PAYLOAD_STRING, header, SECRET);
 
       expect(event.id).to.equal(EVENT_PAYLOAD.id);
     });
@@ -29,7 +29,7 @@ describe('Webhooks', function() {
           payload: '} I am not valid JSON; 123][',
         });
         expect(function() {
-          stripe.webhooks.constructEvent('} I am not valid JSON; 123][', header, SECRET);
+          mailchimp.webhooks.constructEvent('} I am not valid JSON; 123][', header, SECRET);
         }).to.throw(/Unexpected token/);
       });
 
@@ -38,7 +38,7 @@ describe('Webhooks', function() {
         var header = 'bad_header';
 
         expect(function() {
-          stripe.webhooks.constructEvent(EVENT_PAYLOAD_STRING, header, SECRET);
+          mailchimp.webhooks.constructEvent(EVENT_PAYLOAD_STRING, header, SECRET);
         }).to.throw(/Unable to extract timestamp and signatures from header/);
       });
   });
@@ -50,19 +50,19 @@ describe('Webhooks', function() {
       var expectedMessage = /Unable to extract timestamp and signatures from header/;
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET);
       }).to.throw(expectedMessage);
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, null, SECRET);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, null, SECRET);
       }).to.throw(expectedMessage);
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, undefined, SECRET);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, undefined, SECRET);
       }).to.throw(expectedMessage);
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, '', SECRET);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, '', SECRET);
       }).to.throw(expectedMessage);
     });
 
@@ -72,39 +72,40 @@ describe('Webhooks', function() {
       });
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET);
       }).to.throw(/No signatures found with expected scheme/);
     });
 
-    it('should raise a SignatureVerificationError when there are no valid signatures for the payload', function() {
+    it('should ra ise a SignatureVerificationError when there are no valid signatures for the payload', function() {
       var header = generateHeaderString({
         signature: 'bad_signature',
       });
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET);
       }).to.throw(/No signatures found matching the expected signature for payload/);
     });
 
-    it('should raise a SignatureVerificationError when the timestamp is not within the tolerance', function() {
+    it('should ra ise a SignatureVerificationError when the timestamp is not within the tolerance', function() {
       var header = generateHeaderString({
         timestamp: (Date.now() / 1000) - 15,
       });
 
       expect(function() {
-        stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET, 10);
+        mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET, 10);
       }).to.throw(/Timestamp outside the tolerance zone/);
     });
 
     it('should return true when the header contains a valid signature and ' +
       'the timestamp is within the tolerance',
-    function() {
-      var header = generateHeaderString({
-        timestamp: (Date.now() / 1000),
-      });
+      function() {
+        var header = generateHeaderString({
+          timestamp: (Date.now() / 1000),
+        });
 
-      expect(stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET, 10)).to.equal(true);
-    });
+        expect(mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET, 10)).to.equal(true);
+      }
+    );
 
     it('should return true when the header contains at least one valid signature', function() {
       var header = generateHeaderString({
@@ -113,18 +114,19 @@ describe('Webhooks', function() {
 
       header += ',v1=potato';
 
-      expect(stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET, 10)).to.equal(true);
+      expect(mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET, 10)).to.equal(true);
     });
 
     it('should return true when the header contains a valid signature ' +
       'and the timestamp is off but no tolerance is provided',
-    function() {
-      var header = generateHeaderString({
-        timestamp: 12345,
-      });
-
-      expect(stripe.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET)).to.equal(true);
-    });
+      function() {
+        var header = generateHeaderString({
+          timestamp: 12345,
+        });
+        
+        expect(mailchimp.webhooks.signature.verifyHeader(EVENT_PAYLOAD_STRING, header, SECRET)).to.equal(true);
+       }
+    );
   });
 });
 
@@ -134,10 +136,10 @@ function generateHeaderString(opts) {
   opts.timestamp = Math.floor(opts.timestamp) || Math.floor(Date.now() / 1000);
   opts.payload = opts.payload || EVENT_PAYLOAD_STRING;
   opts.secret = opts.secret || SECRET;
-  opts.scheme = opts.scheme || stripe.webhooks.signature.EXPECTED_SCHEME;
+  opts.scheme = opts.scheme || mailchimp.webhooks.signature.EXPECTED_SCHEME;
 
   opts.signature = opts.signature ||
-    stripe.webhooks.signature._computeSignature(opts.timestamp + '.' + opts.payload, opts.secret);
+    mailchimp.webhooks.signature._computeSignature(opts.timestamp + '.' + opts.payload, opts.secret);
 
   var generatedHeader = [
     't=' + opts.timestamp,

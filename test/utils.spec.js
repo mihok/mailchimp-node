@@ -30,7 +30,7 @@ describe('utils', function() {
       expect(utils.stringifyRequestData({
         a: 1,
         b: 'foo',
-      })).to.equal('a=1&b=foo');
+      })).to.equal('{"a":1,"b":"foo"}');
     });
 
     it('Handles deeply nested object', function() {
@@ -42,7 +42,7 @@ describe('utils', function() {
             },
           },
         },
-      }))).to.equal('a[b][c][d]=2');
+      }))).to.equal('{"a":{"b":{"c":{"d":2}}}}');
     });
 
     it('Handles arrays of objects', function() {

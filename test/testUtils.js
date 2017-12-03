@@ -8,28 +8,36 @@ require('chai').use(require('chai-as-promised'));
 
 var utils = module.exports = {
 
-  getUserStripeKey: function() {
-    var key = process.env.STRIPE_TEST_API_KEY || 'tGN0bIwXnHdwOa85VABjPdSn8nWY7G7I';
+  getUserMailchimpKey: function() {
+    var key = process.env.MAILCHIMP_TEST_API_KEY || 'tGN0bIwXnHdwOa85VABjPdSn8nWY7G7I-us0';
 
     return key;
   },
 
-  getSpyableStripe: function() {
-    // Provide a testable stripe instance
+  getUserMailchimpDataCenter: function () {
+    var key = utils.getUserMailchimpKey();
+    var keyDataCenter = key.split('-');
+    var datacenter = (keyDataCenter.length > 1) ? keyDataCenter[1] : process.env.MAILCHIMP_TEST_DATACENTER || 'us0';
+
+    return datacenter;
+  },
+
+  getSpyableMailchimp: function() {
+    // Provide a testable mailchimp instance
     // That is, with mock-requests built in and hookable
 
-    var stripe = require('../lib/stripe');
-    var stripeInstance = stripe('fakeAuthToken');
+    var mailchimp = require('../lib/mailchimp');
+    var mailchimpInstance = mailchimp('fakeAuthToken');
 
-    stripeInstance.REQUESTS = [];
+    mailchimpInstance.REQUESTS = [];
 
-    for (var i in stripeInstance) {
-      if (stripeInstance[i] instanceof stripe.StripeResource) {
+    for (var i in mailchimpInstance) {
+      if (mailchimpInstance[i] instanceof mailchimp.MailchimpResource) {
         // Override each _request method so we can make the params
         // available to consuming tests (revealing requests made on
         // REQUESTS and LAST_REQUEST):
-        stripeInstance[i]._request = function(method, url, data, auth, options, cb) {
-          var req = stripeInstance.LAST_REQUEST = {
+        mailchimpInstance[i]._request = function(method, url, data, auth, options, cb) {
+          var req = mailchimpInstance.LAST_REQUEST = {
             method: method,
             url: url,
             data: data,
@@ -38,13 +46,13 @@ var utils = module.exports = {
           if (auth) {
             req.auth = auth;
           }
-          stripeInstance.REQUESTS.push(req);
+          mailchimpInstance.REQUESTS.push(req);
           cb.call(this, null, {});
         };
       }
     }
 
-    return stripeInstance;
+    return mailchimpInstance;
   },
 
   /**
@@ -58,8 +66,8 @@ var utils = module.exports = {
     function CleanupUtility(timeout) {
       var self = this;
       this._cleanupFns = [];
-      this._stripe = require('../lib/stripe')(
-        utils.getUserStripeKey(),
+      this._mailchimp = require('../lib/mailchimp')(
+        utils.getUserMailchimpKey(),
         'latest'
       );
       afterEach(function(done) {
@@ -97,24 +105,14 @@ var utils = module.exports = {
       add: function(fn) {
         this._cleanupFns.push(fn);
       },
-      deleteCustomer: function(custId) {
+      deleteMember: function(memId, memHash) {
         this.add(function() {
-          return this._stripe.customers.del(custId);
+          return this._mailchimp.lists.deleteMember(memId, memHash);
         });
       },
-      deletePlan: function(pId) {
+      deleteList: function(lId) {
         this.add(function() {
-          return this._stripe.plans.del(pId);
-        });
-      },
-      deleteCoupon: function(cId) {
-        this.add(function() {
-          return this._stripe.coupons.del(cId);
-        });
-      },
-      deleteInvoiceItem: function(iiId) {
-        this.add(function() {
-          return this._stripe.invoiceItems.del(iiId);
+          return this._mailchimp.lists.del(lId);
         });
       },
     };

@@ -1,28 +1,29 @@
 'use strict';
 
-var testUtils = require('./testUtils');
-var chai = require('chai');
-var stripe = require('../lib/stripe')(
-  testUtils.getUserStripeKey(),
-  'latest'
-);
+// var testUtils = require('./testUtils');
+// var chai = require('chai');
+// var stripe = require('../lib/stripe')(
+//   testUtils.getUserStripeKey(),
+//   'latest'
+// );
 
-var expect = chai.expect;
+// var expect = chai.expect;
 
-var CUSTOMER_DETAILS = {
-  description: 'Some customer',
-  card: 'tok_visa',
-};
+// var CUSTOMER_DETAILS = {
+//   description: 'Some customer',
+//   card: 'tok_visa',
+// };
 
-var CURRENCY = '_DEFAULT_CURRENCY_NOT_YET_GOTTEN_';
+// var CURRENCY = '_DEFAULT_CURRENCY_NOT_YET_GOTTEN_';
 
 describe('Flows', function() {
   // Note: These tests must be run as one so we can retrieve the
   // default_currency (required in subsequent tests);
 
-  var cleanup = new testUtils.CleanupUtility();
+  // var cleanup = new testUtils.CleanupUtility();
   this.timeout(30000);
 
+  /*
   it('Allows me to retrieve default_currency', function() {
     return expect(
       stripe.account.retrieve()
@@ -522,4 +523,5 @@ describe('Flows', function() {
       }).type).to.equal('StripeInvalidRequestError');
     });
   });
+  */
 });
