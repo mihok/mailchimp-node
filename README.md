@@ -1,9 +1,9 @@
 # Mailchimp Node.js Library
  
-[![Version](https://img.shields.io/npm/v/mailchimp.svg)](https://www.npmjs.org/package/mailchimp-node)
+[![Version](https://img.shields.io/npm/v/mailchimp-node.svg)](https://www.npmjs.org/package/mailchimp-node)
 [![Build Status](https://travis-ci.org/mihok/mailchimp-node.svg?branch=master)](https://travis-ci.org/mihok/mailchimp-node)
-[![Downloads](https://img.shields.io/npm/dm/mailchimp.svg)](https://www.npmjs.com/package/mailchimp)
-[![Try on RunKit](https://badge.runkitcdn.com/mailchimp.svg)](https://runkit.com/npm/mailchimp)
+[![Downloads](https://img.shields.io/npm/dm/mailchimp-node.svg)](https://www.npmjs.com/package/mailchimp-node)
+[![Try on RunKit](https://badge.runkitcdn.com/mailchimp-node.svg)](https://runkit.com/npm/mailchimp-node)
 
 A Mailchimp Node library provides convenient access to the Mailchimo API from
 applications written in server-side JavaScript.
