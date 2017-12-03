@@ -34,7 +34,7 @@ var mailchimp = require('mailchimp-node')('sk_test_...');
 
 mailchimp.list.createMember(
   'exampleListHash',
-  { email: 'subscriber@example.com', status: 'subscriber' },
+  { email: 'subscriber@example.com', status: 'subscribed' },
   function(err, subscriber) {
     err; // null if no error occurred
     subscriber; // the created subscriber object
@@ -77,7 +77,7 @@ mailchimp.list.create({
 }).then(function(list){
   return mailchimp.list.createMember(list.id, {
     email: 'bob@example.com',
-    status: 'subscriber',
+    status: 'subscribed',
   });
 }).then(function(subscriber) {
   // New subscriber
