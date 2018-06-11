@@ -17,7 +17,7 @@
   },
   "bugs:": "https://github.com/mihok/mailchimp-node/issues",
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "main": "lib/mailchimp.js",
   "devDependencies": {
