@@ -173,10 +173,10 @@ describe('utils', function() {
       expect(args.length).to.equal(1);
     });
     it('parses an api version', function() {
-      var args = [{foo: 'bar'}, {stripe_version: '2003-03-30'}];
+      var args = [{foo: 'bar'}, {mailchimp_version: 'latest'}];
       expect(utils.getOptionsFromArgs(args)).to.deep.equal({
         auth: null,
-        headers: {'Stripe-Version': '2003-03-30'},
+        headers: {'Mailchimp-Version': 'latest'},
       });
       expect(args.length).to.equal(1);
     });
@@ -184,13 +184,13 @@ describe('utils', function() {
       var args = [{foo: 'bar'}, {
         api_key: 'sk_test_iiiiiiiiiiiiiiiiiiiiiiii',
         idempotency_key: 'foo',
-        stripe_version: '2010-01-10',
+        mailchimp_version: '2010-01-10',
       },];
       expect(utils.getOptionsFromArgs(args)).to.deep.equal({
         auth: 'sk_test_iiiiiiiiiiiiiiiiiiiiiiii',
         headers: {
           'Idempotency-Key': 'foo',
-          'Stripe-Version': '2010-01-10',
+          'Mailchimp-Version': '2010-01-10',
         },
       });
       expect(args.length).to.equal(1);
@@ -199,13 +199,13 @@ describe('utils', function() {
       var args = [{
         api_key: 'sk_test_iiiiiiiiiiiiiiiiiiiiiiii',
         idempotency_key: 'foo',
-        stripe_version: 'hunter2',
+        mailchimp_version: 'hunter2',
       },];
       expect(utils.getOptionsFromArgs(args)).to.deep.equal({
         auth: 'sk_test_iiiiiiiiiiiiiiiiiiiiiiii',
         headers: {
           'Idempotency-Key': 'foo',
-          'Stripe-Version': 'hunter2',
+          'Mailchimp-Version': 'hunter2',
         },
       });
       expect(args.length).to.equal(0);
@@ -214,7 +214,7 @@ describe('utils', function() {
       var args = [{foo: 'bar'}, {
         api_key: 'sk_test_iiiiiiiiiiiiiiiiiiiiiiii',
         idempotency_key: 'foo',
-        stripe_version: '2010-01-10',
+        mailchimp_version: '2010-01-10',
         fishsticks: true,
         custard: true,
       },];

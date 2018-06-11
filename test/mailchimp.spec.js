@@ -2,6 +2,11 @@
 
 var testUtils = require('./testUtils');
 var crypto = require('crypto');
+/*
+var mailchimp = testUtils.getSpyableMailchimp(
+  testUtils.getUserMailchimpKey(),
+);
+*/
 var mailchimp = require('../lib/mailchimp')(
   testUtils.getUserMailchimpKey(),
   'latest',
@@ -18,7 +23,7 @@ function randomNum (low, high) {
   return result + low;
 }
 
-var LIST_ID = 'a6fc029cfe';
+var LIST_ID = testUtils.getUserMailchimpListID();
 var LIST_MEMBER_DETAILS = {
   // Generate a random email due to Mailchimp complaining after multiple retries
   email_address: 'customer-' + randomNum(1, 99999) + '@email.com',

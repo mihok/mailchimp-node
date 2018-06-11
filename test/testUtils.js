@@ -22,12 +22,18 @@ var utils = module.exports = {
     return datacenter;
   },
 
-  getSpyableMailchimp: function() {
+  getUserMailchimpListID: function () {
+    var id = process.env.MAILCHIMP_TEST_LIST_ID || '27a659aa8d';
+
+    return id;
+  },
+
+  getSpyableMailchimp: function(token = 'fakeAuthToken') {
     // Provide a testable mailchimp instance
     // That is, with mock-requests built in and hookable
 
     var mailchimp = require('../lib/mailchimp');
-    var mailchimpInstance = mailchimp('fakeAuthToken');
+    var mailchimpInstance = mailchimp(token);
 
     mailchimpInstance.REQUESTS = [];
 
