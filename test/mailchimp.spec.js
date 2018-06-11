@@ -2,6 +2,7 @@
 
 var testUtils = require('./testUtils');
 var crypto = require('crypto');
+
 /*
 var mailchimp = testUtils.getSpyableMailchimp(
   testUtils.getUserMailchimpKey(),
