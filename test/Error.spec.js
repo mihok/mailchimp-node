@@ -15,7 +15,7 @@ describe('Error', function() {
 
   describe('MailchimpError', function() {
     it('Generates specific instance depending on error-type', function() {
-      expect(Error.MailchimpError.generate({type: 'invalid_request_error'})).to.be.instanceOf(
+      expect(Error.MailchimpError.generate({title: 'Invalid Resource'/* , type: 'invalid_request_error' */})).to.be.instanceOf(
         Error.MailchimpInvalidRequestError
       );
       expect(Error.MailchimpError.generate({type: 'api_error'})).to.be.instanceOf(Error.MailchimpAPIError);
